@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'academia',
     'usuarios',
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
