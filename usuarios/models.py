@@ -40,3 +40,19 @@ class User(AbstractUser):
     def __str__(self):
         return self.get_username()
 
+
+class GoogleCalendarToken(models.Model):
+    user = models.OneToOneField(
+        'usuarios.User',
+        on_delete=models.CASCADE,
+        related_name='google_calendar_token'
+    )
+    access_token = models.CharField(max_length=512)
+    refresh_token = models.CharField(max_length=512, blank=True, null=True)
+    token_expiry = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Google Calendar Token for {self.user.username}"
+

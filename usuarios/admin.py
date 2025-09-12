@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Membership
+from .models import User, Membership, GoogleCalendarToken
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -18,3 +18,8 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ('name', 'max_bookings_per_day', 'has_google_sync')
+
+@admin.register(GoogleCalendarToken)
+class GoogleCalendarTokenAdmin(admin.ModelAdmin):
+    list_display = ('user', 'access_token', 'token_expiry', 'created_at', 'updated_at')
+    search_fields = ('user__username',)

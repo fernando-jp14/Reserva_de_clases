@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Booking(models.Model):
     STATUS_ACTIVE = "ACTIVE"
     STATUS_CANCELLED = "CANCELLED"
@@ -44,4 +45,11 @@ class Booking(models.Model):
         if is_new and self.class_session.capacity > 0:
             self.class_session.capacity -= 1
             self.class_session.save()
+
+            # Sincroniza con Google Calendar si el usuario es PREMIUM
+            from reservas.services import create_google_calendar_event
+            event_id = create_google_calendar_event(self.user, self.class_session, self)
+            if event_id:
+                self.calendar_event_id = event_id
+                super().save(update_fields=['calendar_event_id'])
 

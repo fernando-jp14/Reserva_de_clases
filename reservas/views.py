@@ -38,12 +38,23 @@ class BookingViewSet(viewsets.ModelViewSet):
 		serializer = self.get_serializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		user = request.user
-		class_session = serializer.validated_data['class_session']
+		class_session_id = serializer.validated_data['class_session_id']
+		from academia.models import ClassSession
+		try:
+			class_session = ClassSession.objects.get(id=class_session_id)
+		except ClassSession.DoesNotExist:
+			return Response({'detail': 'La sesión de clase no existe.'}, status=status.HTTP_400_BAD_REQUEST)
 		# Otros campos
-		extra_fields = {k: v for k, v in serializer.validated_data.items() if k not in ['user', 'class_session']}
+		extra_fields = {k: v for k, v in serializer.validated_data.items() if k not in ['user', 'class_session_id']}
 		try:
 			booking = create_booking_and_update_capacity(user, class_session, **extra_fields)
 		except ValueError as e:
 			return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+		# Crear evento en Google Calendar y guardar el event_id
+		from .services import create_google_calendar_event
+		event_id = create_google_calendar_event(user, class_session, booking)
+		if event_id:
+			booking.calendar_event_id = event_id
+			booking.save(update_fields=["calendar_event_id"])
 		read_serializer = self.get_serializer(booking)
 		return Response(read_serializer.data, status=status.HTTP_201_CREATED)
