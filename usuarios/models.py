@@ -6,7 +6,7 @@ class Membership(models.Model):
     Membership: FREE / PREMIUM
     """
     name = models.CharField(max_length=32, unique=True)  # e.g. "FREE", "PREMIUM"
-    max_bookings_per_day = models.PositiveIntegerField(default=1)
+    max_bookings_per_day = models.PositiveIntegerField(null=False)
     has_google_sync = models.BooleanField(default=False)
 
     class Meta:

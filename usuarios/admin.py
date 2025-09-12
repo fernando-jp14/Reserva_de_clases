@@ -4,6 +4,7 @@ from .models import User, Membership
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    #para agregar el campo membership en el admin de User
     fieldsets = BaseUserAdmin.fieldsets + (
         (None, {'fields': ('membership',)}),
     )
