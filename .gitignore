@@ -5,3 +5,4 @@ venv/
 *.pyc
 sqlite3
 endpoints.md
+credenciales/

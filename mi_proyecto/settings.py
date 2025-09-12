@@ -117,12 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'es-pe'
+TIME_ZONE = 'America/Lima'
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -146,4 +143,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+# Configuración de duración de los tokens JWT
+# SIMPLE_JWT controla el tiempo de vida de los tokens de acceso y refresh.
+# Aquí se aumenta el tiempo de expiración del token de acceso a 1 hora.
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Token de acceso dura 1 hora
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Token de refresh dura 1 día
 }
