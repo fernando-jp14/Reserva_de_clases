@@ -54,7 +54,7 @@ class ClassSession(models.Model):
     )
     start = models.DateTimeField()
     end = models.DateTimeField()
-    capacity = models.PositiveIntegerField(default=0)
+    capacity = models.PositiveIntegerField(null=False)
     # available_slots puede calcularse dinámicamente, pero dejamos un campo opcional
     available_slots = models.PositiveIntegerField(
         null=True,

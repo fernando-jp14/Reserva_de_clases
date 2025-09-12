@@ -34,5 +34,14 @@ class Booking(models.Model):
         ]
 
     def __str__(self):
-        return f"Booking {self.id} - {self.user} - {self.class_} ({self.status})"
+        return f"Booking {self.id} - {self.user} - {self.class_session} ({self.status})"
+    
+
+    # Actualiza la capacidad al crear una reserva
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new and self.class_session.capacity > 0:
+            self.class_session.capacity -= 1
+            self.class_session.save()
 
