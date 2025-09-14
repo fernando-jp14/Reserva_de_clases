@@ -50,11 +50,6 @@ class BookingViewSet(viewsets.ModelViewSet):
 			booking = create_booking_and_update_capacity(user, class_session, **extra_fields)
 		except ValueError as e:
 			return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-		# Crear evento en Google Calendar y guardar el event_id
-		from .services import create_google_calendar_event
-		event_id = create_google_calendar_event(user, class_session, booking)
-		if event_id:
-			booking.calendar_event_id = event_id
-			booking.save(update_fields=["calendar_event_id"])
+		# ...la sincronización con Google Calendar se realiza automáticamente en el método save() del modelo Booking...
 		read_serializer = self.get_serializer(booking)
 		return Response(read_serializer.data, status=status.HTTP_201_CREATED)
