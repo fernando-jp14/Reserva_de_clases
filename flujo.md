@@ -102,3 +102,9 @@ Authorization: Bearer TU_ACCESS_TOKEN
 - El flujo de Google Calendar solo aplica para usuarios PREMIUM.
 - Si necesitas el `refresh_token`, asegúrate de revocar el acceso en tu cuenta de Google antes de autorizar nuevamente.
 - Todos los endpoints requieren autenticación JWT excepto el registro.
+
+
+
+=================================================
+
+http://127.0.0.1:8000/api/reservas/bookings/39/

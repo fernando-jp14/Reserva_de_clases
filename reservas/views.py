@@ -8,6 +8,10 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 # Permiso personalizado: solo superusuario y usuario PREMIUM pueden editar/eliminar su reserva
 class IsSuperUserOrPremiumOwnerOrReadOnly(BasePermission):
+	def has_permission(self, request, view):
+		# Solo permite acceso si el usuario está autenticado
+		return request.user and request.user.is_authenticated
+
 	def has_object_permission(self, request, view, obj):
 		# Métodos seguros: cualquiera autenticado puede ver
 		if request.method in SAFE_METHODS:
